@@ -1,7 +1,7 @@
 # This workflow is triggered by new releases and on a daily schedule.
 # It builds, unit tests, live tests and published the Open AI nuget package.
 # For daily runs, the package is published to the GitHub package registry.
-# For releases, the package is published to the NuGet package registry.
+# This fork does not publish to nuget.org (the upstream owns the package).
 name: Release package
 
 on:
@@ -94,12 +94,4 @@ jobs:
             ${{github.workspace}}/build-artifacts/packages/*.nupkg
             --source "github"
             --api-key ${{ secrets.GITHUB_TOKEN }}
-            --skip-duplicate
-
-      - name: Publish package to nuget.org
-        if: github.event_name == 'release'
-        run: dotnet nuget push
-            ${{github.workspace}}/build-artifacts/packages/*.nupkg
-            --source https://api.nuget.org/v3/index.json
-            --api-key ${{ secrets.NUGET_API_KEY }}
             --skip-duplicate
